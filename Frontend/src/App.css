@@ -498,26 +498,24 @@ nav .logo {
   align-items: center;
   font-size: 2rem;
 }
-nav .navLinks {
+nav .nav-links {
   flex: 2;
-}
-nav .navLinks {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-nav .navLinks .links {
+nav .nav-links .links {
   display: flex;
   gap: 25px;
 }
-nav .navLinks .links a {
+nav .nav-links .links a {
   text-decoration: none;
   color: #222;
   font-size: 20px;
   font-weight: 600;
   letter-spacing: 1.4px;
 }
-nav .navLinks .links a:hover {
+nav .nav-links .links a:hover {
   color: #000;
   transition: 0.3s;
   cursor: pointer;
@@ -560,21 +558,7 @@ nav svg {
   nav .hamburger {
     display: flex;
   }
-  nav .navLinks {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    padding: 15px 7.5px;
-    z-index: 2;
-    transition: 0.3s;
-    position: fixed;
-    left: 0;
-    height: 100%;
-    width: 400px;
-    background: #ffffffbf;
-    top: 79px;
-  }
-  nav .showmenu {
+  nav .nav-links {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -583,16 +567,30 @@ nav svg {
     transition: 0.3s;
     position: fixed;
     left: -100%;
+    height: 100%;
+    width: 400px;
+    background: #ffffffbf;
+    top: 79px;
+  }
+  nav .showMenu {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding: 15px 7.5px;
+    z-index: 2;
+    transition: 0.3s;
+    position: fixed;
+    left: 0;
     width: 400px;
     height: 100%;
     background: #ffffffbf;
     top: 79px;
   }
-  nav .navLinks .links {
+  nav .nav-links .links {
     flex-direction: column;
     text-align: center;
   }
-  nav .navLinks .links a {
+  nav .nav-links .links a {
     font-weight: 700;
   }
   nav .logoutBtn {
@@ -600,12 +598,12 @@ nav svg {
   }
 }
 @media (max-width: 800px) {
-  nav .showmenu {
+  nav .showMenu {
     width: 96vw;
   }
 }
 @media (max-width: 650px) {
-  nav .showmenu {
+  nav .showMenu {
     margin: 0;
     width: 100%;
     border-radius: 0;
@@ -615,7 +613,7 @@ nav svg {
   nav {
     background: #fff;
   }
-  nav .navLinks {
+  nav .nav-links {
     background: #fff;
     width: 100%;
   }
