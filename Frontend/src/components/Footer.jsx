@@ -27,13 +27,18 @@ const Footer = () => {
     },
     {
       id: 5,
-      day: "Monday",
+      day: "Friday",
       time: "3:00 PM - 9:00 PM",
     },
     {
       id: 6,
       day: "Saturday",
       time: "9:00 AM - 3:00 PM",
+    },
+    {
+      id: 7,
+      day: "Sunday",
+      time: "Emergency Only",
     },
   ];
 
@@ -42,9 +47,6 @@ const Footer = () => {
       <footer className={"container"}>
         <hr />
         <div className="content">
-          <div>
-            <img src="/logo.png" alt="logo" className="logo-img"/>
-          </div>
           <div>
             <h4>Quick Links</h4>
             <ul>

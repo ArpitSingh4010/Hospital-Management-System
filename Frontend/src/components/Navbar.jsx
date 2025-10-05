@@ -37,9 +37,9 @@ const Navbar = () => {
                     <Link to={"/AboutUs"}>ABOUT</Link>
                 </div>
                 {isAuthenticated ? (
-                    <button className='logout-btn nav-button' onClick={handleLogout}>LOGOUT</button>
+                    <button className='logout-btn nav-button' onClick={handleLogout}><span>LOGOUT</span></button>
                 ) : (
-                    <button className='login-btn nav-button' onClick={gotoLogin}>LOGIN</button>
+                    <button className='login-btn nav-button' onClick={gotoLogin}><span>LOGIN</span></button>
                 )}
             </div>
             <div className="hamburger" onClick={() => setShow(!show)}><GiHamburgerMenu/></div>
