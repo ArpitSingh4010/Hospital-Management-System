@@ -3,7 +3,7 @@ import cors from 'cors';
 import { config } from 'dotenv';
 import cookieParser from 'cookie-parser';
 import fileUpload from 'express-fileupload';
-import { dbConnection } from './database/dbConnection.js';
+// Removed MongoDB dependency
 import messageRouter from './routes/messageRouter.js';  
 import {errorMiddleware} from'./middlewares/errorMiddleware.js'; // to handle errors
 import userRouter from './routes/userRouter.js';
@@ -42,7 +42,7 @@ app.use("/api/v1/message",messageRouter);  //message route
 app.use("/api/v1/user",userRouter);  //user route
 app.use("/api/v1/appointment", appointmentRouter);  //appointment route
 
-dbConnection();  //database connection
+// No database connection needed
 
 
 app.use(errorMiddleware); //error middleware to handle errors

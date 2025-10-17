@@ -3,6 +3,7 @@ import Hero from '../components/Hero'
 import Biography from '../components/Biography'
 import Departments from '../components/Departments'
 import MessageForm from '../components/MessageForm'
+import Chatbot from '../components/Chatbot'
 
 const Home = () => {
   return (
@@ -11,6 +12,7 @@ const Home = () => {
    <Biography imageURL="public/about.png"/>
    <Departments/>
    <MessageForm/>
+   <Chatbot/>
    </>
   )
 }
