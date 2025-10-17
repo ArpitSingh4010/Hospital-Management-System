@@ -35,18 +35,23 @@ export const sendMessage = catchAsyncErrors(async (req, res, next) => {
         return next(new ErrorHandler("Message field cannot be empty", 400));
     }
 
-    // Save message to database only if all validations pass
-    await Message.create({
-        firstName,
-        lastName,
-        email,
-        phone,
-        message
-    });
-    res.status(200).json({
-        success: true,
-        message: "Message sent successfully"
-    });
+    try {
+        // Save message to database only if all validations pass
+        await Message.create({
+            firstName,
+            lastName,
+            email,
+            phone,
+            message
+        });
+        res.status(200).json({
+            success: true,
+            message: "Message sent successfully"
+        });
+    } catch (error) {
+        console.error("Database error while saving message:", error.message);
+        return next(new ErrorHandler("Database connection error. Please try again later.", 500));
+    }
 });
 
 

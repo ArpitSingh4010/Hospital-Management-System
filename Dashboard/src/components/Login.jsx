@@ -3,11 +3,11 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { enqueueSnackbar } from "notistack";
 import { Context } from "../main";
 import axios from "axios";
+import { FaUser, FaLock, FaUserShield } from "react-icons/fa";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
 
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
 
@@ -15,26 +15,32 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    
+    // Basic validation
+    if (!email || !password) {
+      enqueueSnackbar("Please fill in all fields", { variant: "error" });
+      return;
+    }
+
     try {
-      await axios
-        .post(
-          "http://localhost:4000/api/v1/user/login",
-          { email, password, confirmPassword, role: "Admin" },
-          {
-            withCredentials: true,
-            headers: { "Content-Type": "application/json" },
-          }
-        )
-        .then((res) => {
-          enqueueSnackbar(res.data.message, { variant: "success" });
-          setIsAuthenticated(true);
-          navigateTo("/");
-          setEmail("");
-          setPassword("");
-          setConfirmPassword("");
-        });
+      const response = await axios.post(
+        "http://localhost:4000/api/v1/user/login",
+        { email, password, role: "Admin" },
+        {
+          withCredentials: true,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      
+      enqueueSnackbar(response.data.message, { variant: "success" });
+      setIsAuthenticated(true);
+      navigateTo("/");
+      setEmail("");
+      setPassword("");
     } catch (error) {
-      enqueueSnackbar(error.response.data.message, { variant: "error" });
+      console.error("Login error:", error);
+      const errorMessage = error.response?.data?.message || "Login failed. Please try again.";
+      enqueueSnackbar(errorMessage, { variant: "error" });
     }
   };
 
@@ -44,34 +50,58 @@ const Login = () => {
 
   return (
     <>
-      <section className="container form-component">
-        <img src="/logo.png" alt="logo" className="logo" />
-        <h1 className="form-title">WELCOME TO AURACARE</h1>
-        <p>Only Admins Are Allowed To Access These Resources!</p>
-        <form onSubmit={handleLogin}>
-          <input
-            type="text"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <input
-            type="password"
-            placeholder="Confirm Password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-          <div style={{ justifyContent: "center", alignItems: "center" }}>
-            <button type="submit">Login</button>
+      <div className="login-page">
+        <div className="login-container">
+          <div className="login-card">
+            <div className="login-header">
+              <div className="admin-icon">
+                <FaUserShield />
+              </div>
+              <h1 className="login-title">Admin Dashboard</h1>
+              <p className="login-subtitle">Welcome back! Please sign in to continue.</p>
+              <p className="admin-notice">Only authorized administrators can access this panel.</p>
+            </div>
+            
+            <form onSubmit={handleLogin} className="login-form">
+              <div className="input-group">
+                <div className="input-icon">
+                  <FaUser />
+                </div>
+                <input
+                  type="email"
+                  placeholder="Admin Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="login-input"
+                  required
+                />
+              </div>
+              
+              <div className="input-group">
+                <div className="input-icon">
+                  <FaLock />
+                </div>
+                <input
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="login-input"
+                  required
+                />
+              </div>
+              
+              <button type="submit" className="login-button">
+                Sign In to Dashboard
+              </button>
+            </form>
+            
+            <div className="login-footer">
+              <p>🔒 Secure admin access to AURACARE Hospital Management System</p>
+            </div>
           </div>
-        </form>
-      </section>
+        </div>
+      </div>
     </>
   );
 };

@@ -9,32 +9,37 @@ const Login = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
 
   const navigateTo = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    
+    // Basic validation
+    if (!email || !password) {
+      enqueueSnackbar("Please fill in all fields", { variant: "error" });
+      return;
+    }
+
     try {
-      await axios
-        .post(
-          "http://localhost:4000/api/v1/user/login",
-          { email, password, confirmPassword, role: "Patient" },
-          {
-            withCredentials: true,
-            headers: { "Content-Type": "application/json" },
-          }
-        )
-        .then((res) => {
-          enqueueSnackbar(res.data.message, { variant: "success" });
-          setIsAuthenticated(true);
-          navigateTo("/");
-          setEmail("");
-          setPassword("");
-          setConfirmPassword("");
-        });
+      const response = await axios.post(
+        "http://localhost:4000/api/v1/user/login",
+        { email, password, role: "Patient" },
+        {
+          withCredentials: true,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      
+      enqueueSnackbar(response.data.message, { variant: "success" });
+      setIsAuthenticated(true);
+      navigateTo("/");
+      setEmail("");
+      setPassword("");
     } catch (error) {
-      enqueueSnackbar(error.response.data.message, { variant: "error" });
+      console.error("Login error:", error);
+      const errorMessage = error.response?.data?.message || "Login failed. Please try again.";
+      enqueueSnackbar(errorMessage, { variant: "error" });
     }
   };
 
@@ -62,12 +67,6 @@ const Login = () => {
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-          />
-          <input
-            type="password"
-            placeholder="Confirm Password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
           />
           <div
             style={{

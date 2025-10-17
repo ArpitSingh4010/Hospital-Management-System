@@ -243,6 +243,33 @@ const Chatbot = () => {
   return (
     <>
       <style>{`
+        /* Global scrollbar hiding for chatbot */
+        .chatbot-container .chatbot-messages::-webkit-scrollbar,
+        .chatbot-container .chatbot-messages-wrapper::-webkit-scrollbar {
+          display: none !important;
+          width: 0 !important;
+          height: 0 !important;
+          background: transparent !important;
+        }
+        
+        .chatbot-container .chatbot-messages,
+        .chatbot-container .chatbot-messages-wrapper {
+          -webkit-overflow-scrolling: touch !important;
+          -ms-overflow-style: none !important;
+          scrollbar-width: none !important;
+        }
+
+        /* Force hide all possible scrollbars in chatbot */
+        .chatbot-container * {
+          scrollbar-width: none !important;
+          -ms-overflow-style: none !important;
+        }
+        
+        .chatbot-container *::-webkit-scrollbar {
+          display: none !important;
+          width: 0 !important;
+        }
+
         .chatbot-container {
           position: fixed;
           bottom: 20px;
@@ -359,8 +386,7 @@ const Chatbot = () => {
 
         .chatbot-messages {
           flex: 1;
-          overflow-y: auto;
-          overflow-x: hidden;
+          overflow: hidden;
           padding: 20px;
           background: #F8FAFC;
           display: flex;
@@ -368,24 +394,44 @@ const Chatbot = () => {
           gap: 12px;
           max-height: 400px;
           min-height: 300px;
+          position: relative;
         }
 
-        .chatbot-messages::-webkit-scrollbar {
-          width: 6px;
+        .chatbot-messages-wrapper {
+          overflow-y: auto;
+          overflow-x: hidden;
+          height: 100%;
+          width: 100%;
+          padding-right: 20px;
+          margin-right: -20px;
+          /* Completely hide scrollbar for clean look */
+          -ms-overflow-style: none !important;  /* IE and Edge */
+          scrollbar-width: none !important;     /* Firefox */
         }
 
-        .chatbot-messages::-webkit-scrollbar-track {
-          background: #E2E8F0;
-          border-radius: 10px;
+        /* Hide scrollbar for WebKit browsers (Chrome, Safari, Opera) */
+        .chatbot-messages-wrapper::-webkit-scrollbar {
+          display: none !important;
+          width: 0 !important;
+          background: transparent !important;
         }
 
-        .chatbot-messages::-webkit-scrollbar-thumb {
-          background: #94A3B8;
-          border-radius: 10px;
+        .chatbot-messages-wrapper::-webkit-scrollbar-track {
+          display: none !important;
         }
 
-        .chatbot-messages::-webkit-scrollbar-thumb:hover {
-          background: #64748B;
+        .chatbot-messages-wrapper::-webkit-scrollbar-thumb {
+          display: none !important;
+        }
+
+        /* Additional scrollbar hiding for nested elements */
+        .chatbot-messages-wrapper * {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+
+        .chatbot-messages-wrapper *::-webkit-scrollbar {
+          display: none !important;
         }
 
         .chatbot-message {
@@ -420,12 +466,16 @@ const Chatbot = () => {
           font-size: 14px;
           line-height: 1.5;
           white-space: pre-line;
+          word-wrap: break-word;
+          overflow-wrap: break-word;
+          max-width: 100%;
         }
 
         .chatbot-message.bot .chatbot-message-content {
           background: white;
           color: #1E293B;
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+          border: 1px solid #E2E8F0;
         }
 
         .chatbot-message.user .chatbot-message-content {
@@ -591,31 +641,39 @@ const Chatbot = () => {
             </div>
 
             {/* Messages */}
-            <div 
-              className="chatbot-messages" 
-              ref={messagesContainerRef}
-              onScroll={handleScroll}
-            >
-              {messages.map((msg) => (
-                <div key={msg.id} className={`chatbot-message ${msg.type}`}>
-                  <div className="chatbot-message-content">
-                    {formatMessage(msg.text)}
-                  </div>
-                </div>
-              ))}
-              
-              {isTyping && (
-                <div className="chatbot-message bot">
-                  <div className="chatbot-message-content">
-                    <div className="chatbot-typing">
-                      <span></span>
-                      <span></span>
-                      <span></span>
+            <div className="chatbot-messages">
+              <div 
+                className="chatbot-messages-wrapper"
+                ref={messagesContainerRef}
+                onScroll={handleScroll}
+                style={{
+                  overflowY: 'auto',
+                  overflowX: 'hidden',
+                  msOverflowStyle: 'none',
+                  scrollbarWidth: 'none'
+                }}
+              >
+                {messages.map((msg) => (
+                  <div key={msg.id} className={`chatbot-message ${msg.type}`}>
+                    <div className="chatbot-message-content">
+                      {formatMessage(msg.text)}
                     </div>
                   </div>
-                </div>
-              )}
-              <div ref={messagesEndRef} />
+                ))}
+                
+                {isTyping && (
+                  <div className="chatbot-message bot">
+                    <div className="chatbot-message-content">
+                      <div className="chatbot-typing">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                <div ref={messagesEndRef} />
+              </div>
             </div>
 
             {/* Input */}

@@ -242,6 +242,83 @@ body {
   color: #111;
   font-size: 20px;
 }
+
+/* New stat cards layout */
+.dashboard .banner.stats {
+  display: flex;
+  gap: 20px;
+  align-items: stretch;
+}
+.stat-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 18px 20px;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.stat-card.greeting {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.stat-card .g-left img {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+.muted { color: #6b7280; }
+.small { font-size: 13px; }
+.admin-name { font-size: 20px; margin: 4px 0 2px; }
+.stat-number { font-size: 28px; color: #111; }
+
+/* Appointments table improvements */
+.appointments {
+  background: transparent;
+}
+.appointments-table-container {
+  width: 100%;
+  overflow: auto;
+  background: #fff;
+  padding: 18px;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
+}
+.appointments-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.appointments-table thead th {
+  text-align: left;
+  padding: 12px 16px;
+  font-size: 14px;
+  color: #374151;
+  border-bottom: 1px solid #e6e6e6;
+}
+.appointments-table tbody td {
+  padding: 12px 16px;
+  font-size: 14px;
+  color: #111827;
+  vertical-align: middle;
+  border-bottom: 1px solid #f3f4f6;
+}
+.appointments-table tbody tr:hover { background: #fbfbff; }
+.status-pill { display: inline-block; }
+.status-select {
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: #f3f4f6;
+  font-weight: 600;
+}
+.status-select.pending { color: #b45309; }
+.status-select.accepted { color: #16a34a; }
+.status-select.rejected { color: #dc2626; }
+.visited-cell { text-align: center; }
+
 .dashboard .banner table select {
   font-size: 20px;
   border: none;
@@ -573,4 +650,157 @@ input[type="time"]:before {
   content: attr(placeholder);
   color: #444;
   margin-right: 0.5em;
+}
+
+/* Modern Login Page Styles */
+.login-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 420px;
+}
+
+.login-card {
+  background: white;
+  border-radius: 20px;
+  padding: 40px 30px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(10px);
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.admin-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  margin-bottom: 20px;
+  color: white;
+  font-size: 24px;
+}
+
+.login-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a202c;
+  margin-bottom: 8px;
+}
+
+.login-subtitle {
+  font-size: 16px;
+  color: #718096;
+  margin-bottom: 12px;
+}
+
+.admin-notice {
+  font-size: 13px;
+  color: #e53e3e;
+  background: #fed7d7;
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin: 0;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.input-group {
+  position: relative;
+}
+
+.input-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #a0aec0;
+  z-index: 2;
+}
+
+.login-input {
+  width: 100%;
+  padding: 15px 15px 15px 45px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  background: #f7fafc;
+}
+
+.login-input:focus {
+  outline: none;
+  border-color: #667eea;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.login-button {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+.login-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.login-button:active {
+  transform: translateY(0);
+}
+
+.login-footer {
+  text-align: center;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.login-footer p {
+  font-size: 12px;
+  color: #718096;
+  margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .login-card {
+    padding: 30px 20px;
+    margin: 10px;
+  }
+  
+  .login-title {
+    font-size: 24px;
+  }
+  
+  .admin-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+  }
 }

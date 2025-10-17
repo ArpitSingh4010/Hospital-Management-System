@@ -10,7 +10,8 @@ export const dbConnection = async () => {
     try {
         console.log("Attempting MongoDB connection...");
         const conn = await mongoose.connect(uri, {
-            serverSelectionTimeoutMS: 10000, // 10s timeout
+            serverSelectionTimeoutMS: 30000, // 30s timeout
+            socketTimeoutMS: 45000, // 45s socket timeout
         });
         console.log(`MongoDB connected: ${conn.connection.host}`);
         return conn;
@@ -18,6 +19,7 @@ export const dbConnection = async () => {
         console.error("MongoDB connection error:", err.message);
         // Provide common hints
         console.error("Hints: Check IP allowlist / network, verify credentials, ensure the cluster is running.");
+        console.error("For local MongoDB: Ensure MongoDB service is running on your machine.");
         throw err; // rethrow so caller can decide to exit
     }
 };

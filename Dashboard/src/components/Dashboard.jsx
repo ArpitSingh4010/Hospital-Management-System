@@ -5,6 +5,8 @@ import axios from "axios";
 import { enqueueSnackbar } from "notistack";
 import { GoCheckCircleFill } from "react-icons/go";
 import { AiFillCloseCircle } from "react-icons/ai";
+import { FaUsers, FaUserMd, FaCalendarAlt, FaChartLine } from "react-icons/fa";
+import { MdDashboard } from "react-icons/md";
 
 const Dashboard = () => {
   const [appointments, setAppointments] = useState([]);
@@ -13,7 +15,7 @@ const Dashboard = () => {
     const fetchAppointments = async () => {
       try {
         const { data } = await axios.get(
-          "http://localhost:5000/api/v1/appointment/getall",
+          "http://localhost:4000/api/v1/appointment/getall",
           { withCredentials: true }
         );
         setAppointments(data.appointments);
@@ -52,36 +54,33 @@ const Dashboard = () => {
   return (
     <>
       <section className="dashboard page">
-        <div className="banner">
-          <div className="firstBox">
-            <img src="/doc.png" alt="docImg" />
-            <div className="content">
-              <div>
-                <p>Hello ,</p>
-                <h5>
-                  {admin &&
-                    `${admin.firstName} ${admin.lastName}`}{" "}
-                </h5>
-              </div>
-              <p>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                Facilis, nam molestias. Eaque molestiae ipsam commodi neque.
-                Assumenda repellendus necessitatibus itaque.
-              </p>
+        <div className="banner stats">
+          <div className="stat-card greeting">
+            <div className="g-left">
+              <img src="/doc.png" alt="docImg" />
+            </div>
+            <div className="g-right">
+              <p className="muted">Welcome,</p>
+              <h4 className="admin-name">{admin && `${admin.firstName} ${admin.lastName}`}</h4>
+              <p className="muted small">Manage appointments, doctors and messages from here.</p>
             </div>
           </div>
-          <div className="secondBox">
-            <p>Total Appointments</p>
-            <h3>1500</h3>
+          <div className="stat-card">
+            <p className="muted">Total Appointments</p>
+            <h3 className="stat-number">1500</h3>
           </div>
-          <div className="thirdBox">
-            <p>Registered Doctors</p>
-            <h3>10</h3>
+          <div className="stat-card">
+            <p className="muted">Registered Doctors</p>
+            <h3 className="stat-number">10</h3>
           </div>
         </div>
-        <div className="banner">
-          <h5>Appointments</h5>
-          <table>
+
+        <div className="banner appointments">
+          <div className="appointments-header">
+            <h5>Appointments</h5>
+          </div>
+          <div className="appointments-table-container">
+            <table className="appointments-table">
             <thead>
               <tr>
                 <th>Patient</th>
@@ -101,38 +100,29 @@ const Dashboard = () => {
                       <td>{`${appointment.doctor.firstName} ${appointment.doctor.lastName}`}</td>
                       <td>{appointment.department}</td>
                       <td>
-                        <select
-                          className={
-                            appointment.status === "Pending"
-                              ? "value-pending"
-                              : appointment.status === "Accepted"
-                              ? "value-accepted"
-                              : "value-rejected"
-                          }
-                          value={appointment.status}
-                          onChange={(e) =>
-                            handleUpdateStatus(appointment._id, e.target.value)
-                          }
-                        >
-                          <option value="Pending" className="value-pending">
-                            Pending
-                          </option>
-                          <option value="Accepted" className="value-accepted">
-                            Accepted
-                          </option>
-                          <option value="Rejected" className="value-rejected">
-                            Rejected
-                          </option>
-                        </select>
+                        <div className="status-pill">
+                          <select
+                            className={`status-select ${appointment.status.toLowerCase()}`}
+                            value={appointment.status}
+                            onChange={(e) =>
+                              handleUpdateStatus(appointment._id, e.target.value)
+                            }
+                          >
+                            <option value="Pending">Pending</option>
+                            <option value="Accepted">Accepted</option>
+                            <option value="Rejected">Rejected</option>
+                          </select>
+                        </div>
                       </td>
-                      <td>{appointment.hasVisited === true ? <GoCheckCircleFill className="green"/> : <AiFillCloseCircle className="red"/>}</td>
+                      <td className="visited-cell">{appointment.hasVisited === true ? <GoCheckCircleFill className="green"/> : <AiFillCloseCircle className="red"/>}</td>
                     </tr>
                   ))
                 : "No Appointments Found!"}
             </tbody>
           </table>
 
-          {}
+          </div>
+
         </div>
       </section>
     </>

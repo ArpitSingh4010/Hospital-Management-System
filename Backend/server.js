@@ -1,6 +1,6 @@
 import app from './app.js';
 import cloudinary from 'cloudinary';
-// Removed MongoDB dependency
+import { dbConnection } from './database/dbConnection.js';
 
 //configure cloudinary
 cloudinary.v2.config({
@@ -11,8 +11,10 @@ cloudinary.v2.config({
 
 const startServer = async () => {
   try {
-    // No database connection needed
-    console.log('✅ Server starting without database...');
+    // Connect to database first
+    await dbConnection();
+    console.log('✅ Database connected successfully');
+    
     app.listen(process.env.PORT, () => {
       console.log(`✅ Server is running on port ${process.env.PORT}`);
       console.log(`✅ Frontend can connect to: http://localhost:${process.env.PORT}`);
