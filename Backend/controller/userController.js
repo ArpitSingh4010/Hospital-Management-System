@@ -122,22 +122,51 @@ export const login = catchAsyncErrors(async (req, res, next) => {
 
 // Add New Admin Controller
 export const addNewAdmin = catchAsyncErrors(async (req, res, next) => {
-    const { firstName, lastName, email, gender, phone, aadharNumber, dob, password } = req.body;
-    if (!firstName || !lastName || !email || !gender || !phone || !aadharNumber || !dob || !password) {
-        return next(new ErrorHandler("Please fill the full form", 400));
-    }
-    const isRegistered = await User.findOne({ email });
-    if (isRegistered) {
-        return next(new ErrorHandler(`${isRegistered.role} already exists`, 400));
-    }
-    const admin = await User.create({ firstName, lastName, email, gender, phone, aadharNumber, dob, password, role: "Admin" });
-    res.status(200).json({
-        success: true,
-        message: "Admin added successfully",
-        admin
+    console.log('📝 Add new admin attempt:', { 
+        email: req.body?.email,
+        hasRequiredFields: !!(req.body?.firstName && req.body?.lastName && req.body?.email)
     });
 
-})
+    const { firstName, lastName, email, gender, phone, aadharNumber, dob, password } = req.body;
+    
+    // Validate all required fields
+    if (!firstName || !lastName || !email || !gender || !phone || !aadharNumber || !dob || !password) {
+        console.log('❌ Missing required fields');
+        return next(new ErrorHandler("Please fill all required fields", 400));
+    }
+
+    // Check if admin already exists
+    const isRegistered = await User.findOne({ email });
+    if (isRegistered) {
+        console.log('❌ User already exists:', email, 'Role:', isRegistered.role);
+        return next(new ErrorHandler(`${isRegistered.role} with this email already exists`, 400));
+    }
+
+    // Create new admin
+    const admin = await User.create({ 
+        firstName, 
+        lastName, 
+        email, 
+        gender, 
+        phone, 
+        aadharNumber, 
+        dob, 
+        password, 
+        role: "Admin" 
+    });
+    
+    console.log('✅ Admin added successfully:', {
+        email: admin.email,
+        name: `${admin.firstName} ${admin.lastName}`,
+        role: admin.role
+    });
+
+    res.status(200).json({
+        success: true,
+        message: "New Admin Registered Successfully!",
+        admin
+    });
+});
 
 
 // Get All Doctors Controller

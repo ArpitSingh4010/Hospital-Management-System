@@ -4,7 +4,7 @@ async function testAdminLogin() {
     try {
         console.log('🔐 Testing Admin Login...\n');
         
-        const response = await axios.post('http://localhost:4000/api/v1/user/login', {
+        const response = await axios.post('${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/v1/user/login', {
             email: 'admin@hospital.com',
             password: 'adminpass123',
             role: 'Admin'

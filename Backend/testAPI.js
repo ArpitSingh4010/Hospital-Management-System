@@ -1,7 +1,7 @@
 // Test registration and login through API
 import axios from 'axios';
 
-const baseURL = 'http://localhost:4000/api/v1';
+const baseURL = '${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/v1';
 
 // Test patient data
 const testPatient = {
