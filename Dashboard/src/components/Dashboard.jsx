@@ -5,8 +5,6 @@ import axios from "axios";
 import { enqueueSnackbar } from "notistack";
 import { GoCheckCircleFill } from "react-icons/go";
 import { AiFillCloseCircle } from "react-icons/ai";
-import { FaUsers, FaUserMd, FaCalendarAlt, FaChartLine } from "react-icons/fa";
-import { MdDashboard } from "react-icons/md";
 import API_BASE_URL from "../config/api";
 
 const Dashboard = () => {
@@ -29,13 +27,11 @@ const Dashboard = () => {
 
   const handleUpdateStatus = async (appointmentId, status) => {
     try {
-      console.log('Updating appointment:', appointmentId, 'to status:', status);
       const { data } = await axios.put(
         `${API_BASE_URL}/api/v1/appointment/update/${appointmentId}`,
         { status },
         { withCredentials: true }
       );
-      console.log('Update response:', data);
       setAppointments((prevAppointments) =>
         prevAppointments.map((appointment) =>
           appointment._id === appointmentId
@@ -45,7 +41,6 @@ const Dashboard = () => {
       );
       enqueueSnackbar(data.message, { variant: "success" });
     } catch (error) {
-      console.error('Update error:', error.response?.data || error.message);
       enqueueSnackbar(error.response?.data?.message || "Failed to update status", { variant: "error" });
     }
   };
@@ -58,33 +53,36 @@ const Dashboard = () => {
   return (
     <>
       <section className="dashboard page">
-        <div className="banner stats">
-          <div className="stat-card greeting">
-            <div className="g-left">
-              <img src="/doc.png" alt="docImg" />
-            </div>
-            <div className="g-right">
-              <p className="muted">Welcome,</p>
-              <h4 className="admin-name">{admin && `${admin.firstName} ${admin.lastName}`}</h4>
-              <p className="muted small">Manage appointments, doctors and messages from here.</p>
+        <div className="banner">
+          <div className="firstBox">
+            <img src="/doc.png" alt="docImg" />
+            <div className="content">
+              <div>
+                <p>Hello ,</p>
+                <h5>
+                  {admin &&
+                    `${admin.firstName} ${admin.lastName}`}{" "}
+                </h5>
+              </div>
+              <p>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                Facilis, nam molestias. Eaque molestiae ipsam commodi neque.
+                Assumenda repellendus necessitatibus itaque.
+              </p>
             </div>
           </div>
-          <div className="stat-card">
-            <p className="muted">Total Appointments</p>
-            <h3 className="stat-number">1500</h3>
+          <div className="secondBox">
+            <p>Total Appointments</p>
+            <h3>1500</h3>
           </div>
-          <div className="stat-card">
-            <p className="muted">Registered Doctors</p>
-            <h3 className="stat-number">10</h3>
+          <div className="thirdBox">
+            <p>Registered Doctors</p>
+            <h3>10</h3>
           </div>
         </div>
-
-        <div className="banner appointments">
-          <div className="appointments-header">
-            <h5>Appointments</h5>
-          </div>
-          <div className="appointments-table-container">
-            <table className="appointments-table">
+        <div className="banner">
+          <h5>Appointments</h5>
+          <table>
             <thead>
               <tr>
                 <th>Patient</th>
@@ -104,30 +102,36 @@ const Dashboard = () => {
                       <td>{`${appointment.doctor.firstName} ${appointment.doctor.lastName}`}</td>
                       <td>{appointment.department}</td>
                       <td>
-                        <div className="status-pill">
-                          <select
-                            className={`status-select ${appointment.status.toLowerCase()}`}
-                            value={appointment.status}
-                            onChange={(e) =>
-                              handleUpdateStatus(appointment._id, e.target.value)
-                            }
-                          >
-                            <option value="Pending">Pending</option>
-                            <option value="Confirmed">Confirmed</option>
-                            <option value="Cancelled">Cancelled</option>
-                            <option value="Completed">Completed</option>
-                          </select>
-                        </div>
+                        <select
+                          className={
+                            appointment.status === "Pending"
+                              ? "value-pending"
+                              : appointment.status === "Accepted"
+                              ? "value-accepted"
+                              : "value-rejected"
+                          }
+                          value={appointment.status}
+                          onChange={(e) =>
+                            handleUpdateStatus(appointment._id, e.target.value)
+                          }
+                        >
+                          <option value="Pending" className="value-pending">
+                            Pending
+                          </option>
+                          <option value="Accepted" className="value-accepted">
+                            Accepted
+                          </option>
+                          <option value="Rejected" className="value-rejected">
+                            Rejected
+                          </option>
+                        </select>
                       </td>
-                      <td className="visited-cell">{appointment.hasVisited === true ? <GoCheckCircleFill className="green"/> : <AiFillCloseCircle className="red"/>}</td>
+                      <td>{appointment.hasVisited === true ? <GoCheckCircleFill className="green"/> : <AiFillCloseCircle className="red"/>}</td>
                     </tr>
                   ))
                 : "No Appointments Found!"}
             </tbody>
           </table>
-
-          </div>
-
         </div>
       </section>
     </>
